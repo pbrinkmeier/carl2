@@ -1,0 +1,33 @@
+name:                carl2
+version:             0.1.0.0
+github:              "pbrinkmeier/carl2"
+license:             BSD3
+author:              "Paul Brinkmeier"
+maintainer:          "hallo@pbrinkmeier.de"
+copyright:           "Copyright (c) 2021 Paul Brinkmeier"
+
+extra-source-files:
+- README.md
+
+description:         Calorie counter Telegram bot
+
+dependencies:
+- base >= 4.7 && < 5
+
+library:
+  source-dirs: src
+
+executables:
+  carl2-exe:
+    main:                Main.hs
+    source-dirs:         app
+    ghc-options:
+    - -threaded
+    - -rtsopts
+    - -with-rtsopts=-N
+    dependencies:
+    - carl2
+    # hpack Paths_ warning workaround, see https://github.com/sol/hpack/issues/303
+    when:
+    - condition: false
+      other-modules: Paths_carl2
