@@ -21,5 +21,7 @@ import Carl2.ChatIdField
 share [mkPersist sqlSettings, mkMigrate "migrateAll"] [persistLowerCase|
   User
     userTelegramId TG.ChatId
+
+    UserTelegramId userTelegramId
     deriving (Show)
 |]

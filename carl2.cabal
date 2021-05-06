@@ -4,7 +4,7 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: e645be11a28177af2ce1ead2dc1bcdb6244fb76aa2ace02aa22bc5c53c7d464d
+-- hash: f8b775ca0643a2c4675a8c2d93f74349baeafc1d05a2b738c18fc40f7f0293cc
 
 name:           carl2
 version:        0.1.0.0
@@ -29,6 +29,7 @@ library
       Carl2.Bot
       Carl2.ChatIdField
       Carl2.Schema
+      Carl2.Types.User
   other-modules:
       Paths_carl2
   hs-source-dirs:
