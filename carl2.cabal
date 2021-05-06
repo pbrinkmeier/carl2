@@ -4,7 +4,7 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: 0c4b6333846d05e257bf37367be2665d15d80d6574443eda2f63ef1b9d95fdfc
+-- hash: 13afbc5c777c380123dfd866914dad96cdf1fc966ec5e2a5b198e9565fca2dfe
 
 name:           carl2
 version:        0.1.0.0
@@ -33,6 +33,7 @@ library
       src
   build-depends:
       base >=4.7 && <5
+    , telegram-bot-simple
   default-language: Haskell2010
 
 executable carl2-exe
@@ -43,6 +44,7 @@ executable carl2-exe
   build-depends:
       base >=4.7 && <5
     , carl2
+    , telegram-bot-simple
   if false
     other-modules:
         Paths_carl2
