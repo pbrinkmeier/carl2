@@ -4,7 +4,7 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: f8b775ca0643a2c4675a8c2d93f74349baeafc1d05a2b738c18fc40f7f0293cc
+-- hash: 99b5f828728366cb0273a7f3db95d292dae03e799d7429488fe2dc6e54178f8f
 
 name:           carl2
 version:        0.1.0.0
@@ -29,6 +29,7 @@ library
       Carl2.Bot
       Carl2.ChatIdField
       Carl2.Schema
+      Carl2.Types.Meal
       Carl2.Types.User
   other-modules:
       Paths_carl2
@@ -42,6 +43,8 @@ library
     , persistent-template
     , telegram-bot-simple
     , text
+    , time
+    , transformers
   default-language: Haskell2010
 
 executable carl2-exe
@@ -58,6 +61,8 @@ executable carl2-exe
     , persistent-template
     , telegram-bot-simple
     , text
+    , time
+    , transformers
   if false
     other-modules:
         Paths_carl2

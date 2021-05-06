@@ -19,6 +19,8 @@ dependencies:
 - telegram-bot-simple
 - text
 - monad-logger
+- transformers
+- time
 
 library:
   source-dirs: src

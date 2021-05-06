@@ -1,3 +1,5 @@
+{-# LANGUAGE FlexibleContexts #-}
+{-# LANGUAGE GADTs #-}
 {-# LANGUAGE OverloadedStrings #-}
 {-# LANGUAGE PatternSynonyms #-}
 {-# OPTIONS_GHC -Wno-missing-fields #-}
@@ -6,12 +8,14 @@ module Carl2.Bot where
 
 import Control.Monad.IO.Class
 import Data.Text as T
+import Data.Time
 import Database.Persist.Sqlite
 import qualified Telegram.Bot.API as TG
 import Telegram.Bot.Simple
 import Telegram.Bot.Simple.Debug
 
 import qualified Carl2.Schema as Schema
+import qualified Carl2.Types.Meal as Meal
 import qualified Carl2.Types.User as User
 
 runBot token conn = do
@@ -36,6 +40,8 @@ instance Show Model where
 data Action
   = NoAction
   | Start
+  | Meal
+  | Done
   deriving (Show)
 
 pattern UpdateText text =
@@ -49,6 +55,8 @@ pattern UpdateText text =
 handleUpdate (UpdateText text) _ =
   case T.words text of
     ["/start"] -> Just Start
+    ["/meal"]  -> Just Meal
+    ["/done"]  -> Just Done
     _          -> Just NoAction
 
 handleUpdate _                 _ =
@@ -72,7 +80,39 @@ handleAction Start    model@(Model conn) = model <# do
           replyText "Welcome!"
           pure NoAction
 handleAction action model@(Model conn) =
-  model <# handleAction' action conn
+  model <# (withUser conn $ handleAction' conn action)
 
-handleAction' action conn =
-  pure NoAction
+pattern a :<< b = (a, b)
+
+handleAction' :: SqlBackend -> Action -> (Schema.UserId, Schema.User) -> BotM Action
+handleAction' conn action (userId, user) =
+  case (User.getState user, action) of
+    User.Initial :<< Meal -> do
+      now <- liftIO $ getCurrentTime
+      mealId <- liftIO $ runSqlConn (Meal.create userId now) conn
+      liftIO $ runSqlConn (User.setState userId $ User.MealEntry mealId) conn
+      replyText "Enter ingredients using /add <amount> <unit> <ingredient> <calories>."
+      pure NoAction
+
+    User.MealEntry mealId :<< Done -> do
+      liftIO $ runSqlConn (User.setState userId User.Initial) conn
+      replyText "Meal done."
+      pure NoAction
+
+    _ -> do
+      replyText "Invalid action."
+      pure NoAction
+
+withUser conn f = do
+  res <- currentChatId
+  case res of
+    Nothing -> do
+      pure NoAction
+    Just chatId -> do
+      users  <- liftIO $ runSqlConn (User.getByTelegramId chatId) conn
+      case users of
+        Just (Entity userId user) -> do
+          f (userId, user)
+        Nothing -> do
+          replyText "You need to /start first."
+          pure NoAction

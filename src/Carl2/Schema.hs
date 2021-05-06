@@ -13,6 +13,8 @@
 
 module Carl2.Schema where
 
+import Data.Text
+import Data.Time
 import Database.Persist.TH
 import qualified Telegram.Bot.API as TG
 
@@ -20,8 +22,14 @@ import Carl2.ChatIdField
 
 share [mkPersist sqlSettings, mkMigrate "migrateAll"] [persistLowerCase|
   User
-    userTelegramId TG.ChatId
+    telegramId  TG.ChatId
+    state       Text
+    stateMEMeal MealId Maybe
 
-    UserTelegramId userTelegramId
+    UniqueUserTelegramId telegramId
     deriving (Show)
+
+  Meal
+    user        UserId
+    created     UTCTime
 |]
