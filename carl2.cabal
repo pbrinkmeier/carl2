@@ -4,7 +4,7 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: 8207cb162741f609abbd87f1cfdc92f65635e2b5efe7a4043730e2f408be6d87
+-- hash: e645be11a28177af2ce1ead2dc1bcdb6244fb76aa2ace02aa22bc5c53c7d464d
 
 name:           carl2
 version:        0.1.0.0
@@ -27,7 +27,8 @@ source-repository head
 library
   exposed-modules:
       Carl2.Bot
-      Lib
+      Carl2.ChatIdField
+      Carl2.Schema
   other-modules:
       Paths_carl2
   hs-source-dirs:
@@ -35,7 +36,9 @@ library
   build-depends:
       base >=4.7 && <5
     , monad-logger
+    , persistent
     , persistent-sqlite
+    , persistent-template
     , telegram-bot-simple
     , text
   default-language: Haskell2010
@@ -49,7 +52,9 @@ executable carl2-exe
       base >=4.7 && <5
     , carl2
     , monad-logger
+    , persistent
     , persistent-sqlite
+    , persistent-template
     , telegram-bot-simple
     , text
   if false
