@@ -13,7 +13,10 @@ description:         Calorie counter Telegram bot
 
 dependencies:
 - base >= 4.7 && < 5
+- persistent-sqlite
 - telegram-bot-simple
+- text
+- monad-logger
 
 library:
   source-dirs: src
