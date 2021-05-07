@@ -29,7 +29,8 @@ setState userId state =
   update userId $ mkUpdateList state
   where
     mkUpdateList Initial =
-      [ UserState =. "initial"
+      [ UserState       =. "initial"
+      , UserStateMEMeal =. Nothing
       ]
     mkUpdateList (MealEntry mealId) =
       [ UserState       =. "meal_entry"
