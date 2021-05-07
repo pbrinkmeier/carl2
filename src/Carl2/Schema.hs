@@ -32,4 +32,13 @@ share [mkPersist sqlSettings, mkMigrate "migrateAll"] [persistLowerCase|
   Meal
     user        UserId
     created     UTCTime
+    deriving (Show)
+
+  Ingredient
+    meal        MealId
+    amount      Double
+    unit        Text
+    text        Text
+    calories    Double
+    deriving (Show)
 |]

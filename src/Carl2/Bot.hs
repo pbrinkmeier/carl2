@@ -15,6 +15,7 @@ import Telegram.Bot.Simple
 import Telegram.Bot.Simple.Debug
 
 import qualified Carl2.Schema as Schema
+import qualified Carl2.Types.Ingredient as Ingredient
 import qualified Carl2.Types.Meal as Meal
 import qualified Carl2.Types.User as User
 
@@ -42,6 +43,7 @@ data Action
   | Start
   | Meal
   | Done
+  | GotText Text
   deriving (Show)
 
 pattern UpdateText text =
@@ -54,10 +56,10 @@ pattern UpdateText text =
 
 handleUpdate (UpdateText text) _ =
   case T.words text of
-    ["/start"] -> Just Start
-    ["/meal"]  -> Just Meal
-    ["/done"]  -> Just Done
-    _          -> Just NoAction
+    ["/start"]      -> Just Start
+    ["/meal"]       -> Just Meal
+    ["/done"]       -> Just Done
+    _               -> Just $ GotText text
 
 handleUpdate _                 _ =
   Just NoAction
@@ -91,13 +93,25 @@ handleAction' conn action (userId, user) =
       now <- liftIO $ getCurrentTime
       mealId <- liftIO $ runSqlConn (Meal.create userId now) conn
       liftIO $ runSqlConn (User.setState userId $ User.MealEntry mealId) conn
-      replyText "Enter ingredients using /add <amount> <unit> <ingredient> <calories>."
+      replyText "Enter ingredients by sending me \"<amount> <unit> <ingredient> <calories>\"."
       pure NoAction
 
     User.MealEntry mealId :<< Done -> do
       liftIO $ runSqlConn (User.setState userId User.Initial) conn
       replyText "Meal done."
       pure NoAction
+    
+    User.MealEntry mealId :<< GotText text ->
+      case Ingredient.parse text of
+        Nothing -> do
+          replyText "I didn't get that :("
+          pure NoAction
+        Just (amount, unit, ingredient, cals) -> do
+          let createMealQuery = Ingredient.create mealId amount unit ingredient cals
+          liftIO $ runSqlConn createMealQuery conn
+          total <- liftIO $ runSqlConn (Meal.getTotal mealId) conn
+          replyText $ "Thamgs. Current total: " <> T.pack (show total)
+          pure NoAction
 
     _ -> do
       replyText "Invalid action."

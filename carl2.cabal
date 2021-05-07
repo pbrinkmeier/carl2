@@ -4,7 +4,7 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: 99b5f828728366cb0273a7f3db95d292dae03e799d7429488fe2dc6e54178f8f
+-- hash: 59402399c7281b01cc22c3fa8c79b03cf1131a3158fa57a865a0e3f07c76fb6c
 
 name:           carl2
 version:        0.1.0.0
@@ -29,6 +29,7 @@ library
       Carl2.Bot
       Carl2.ChatIdField
       Carl2.Schema
+      Carl2.Types.Ingredient
       Carl2.Types.Meal
       Carl2.Types.User
   other-modules:
@@ -37,10 +38,12 @@ library
       src
   build-depends:
       base >=4.7 && <5
+    , esqueleto
     , monad-logger
     , persistent
     , persistent-sqlite
     , persistent-template
+    , regex-tdfa
     , telegram-bot-simple
     , text
     , time
@@ -55,10 +58,12 @@ executable carl2-exe
   build-depends:
       base >=4.7 && <5
     , carl2
+    , esqueleto
     , monad-logger
     , persistent
     , persistent-sqlite
     , persistent-template
+    , regex-tdfa
     , telegram-bot-simple
     , text
     , time

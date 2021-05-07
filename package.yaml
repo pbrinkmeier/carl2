@@ -21,6 +21,8 @@ dependencies:
 - monad-logger
 - transformers
 - time
+- regex-tdfa
+- esqueleto
 
 library:
   source-dirs: src
