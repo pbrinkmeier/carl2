@@ -3,6 +3,7 @@
 
 module Carl2.Types.User where
 
+import Carl2.Fields.UserState
 import Carl2.Schema
 
 import Control.Monad.Trans.Reader
@@ -11,36 +12,16 @@ import Database.Persist.Sqlite
 
 -- User state machine stuff
 
-data UserState
-  = Initial
-  | MealEntry MealId
-  deriving (Show)
-
 getState :: User -> UserState
-getState user =
-  case user of
-    User { userState = "initial" } ->
-      Initial
-    User { userState = "meal_entry", userStateMEMeal = Just mealId } ->
-      MealEntry mealId
+getState = userState
 
 setState :: UserId -> UserState -> ReaderT SqlBackend IO ()
-setState userId state =
-  update userId $ mkUpdateList state
-  where
-    mkUpdateList Initial =
-      [ UserState       =. "initial"
-      , UserStateMEMeal =. Nothing
-      ]
-    mkUpdateList (MealEntry mealId) =
-      [ UserState       =. "meal_entry"
-      , UserStateMEMeal =. Just mealId
-      ]
+setState userId state = update userId [ UserState =. state ]
 
 -- DB stuff
 
 create chatId =
-  insertBy $ User chatId "initial" Nothing
+  insertBy $ User chatId Initial
 
 getByTelegramId chatId =
   getBy $ UniqueUserTelegramId chatId
