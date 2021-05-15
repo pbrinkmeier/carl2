@@ -7,7 +7,7 @@ import Database.Persist.Sqlite
 import System.Environment
 import Telegram.Bot.Simple
 
-import Carl2.Bot
+import Carl2.BotImpl
 
 main :: IO ()
 main = do

@@ -4,7 +4,7 @@
 {-# LANGUAGE PatternSynonyms #-}
 {-# OPTIONS_GHC -Wno-missing-fields #-}
 
-module Carl2.Bot where
+module Carl2.BotImpl where
 
 import Control.Monad.IO.Class
 import Data.Text as T
