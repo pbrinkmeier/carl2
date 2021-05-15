@@ -18,7 +18,7 @@ import Data.Time
 import Database.Persist.TH
 import qualified Telegram.Bot.API as TG
 
-import Carl2.ChatIdField
+import Carl2.Fields.ChatId
 
 share [mkPersist sqlSettings, mkMigrate "migrateAll"] [persistLowerCase|
   User

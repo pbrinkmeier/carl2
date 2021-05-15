@@ -4,7 +4,7 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: 59402399c7281b01cc22c3fa8c79b03cf1131a3158fa57a865a0e3f07c76fb6c
+-- hash: b6775cff3a868566b9a93dcc143d4aae7444f2ab636ce2ae42f5774828ede64e
 
 name:           carl2
 version:        0.1.0.0
@@ -27,7 +27,7 @@ source-repository head
 library
   exposed-modules:
       Carl2.Bot
-      Carl2.ChatIdField
+      Carl2.Fields.ChatId
       Carl2.Schema
       Carl2.Types.Ingredient
       Carl2.Types.Meal

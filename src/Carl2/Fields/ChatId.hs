@@ -1,4 +1,4 @@
-module Carl2.ChatIdField where
+module Carl2.Fields.ChatId where
 
 import Control.Arrow
 import Data.Text as T
