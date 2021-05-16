@@ -4,7 +4,7 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: e57efb38bbac8a3d22ca60e069bccb3d7ec5437e8422444184919ce63d51d169
+-- hash: 6b0f55b303c370ddf5b73d373f20984d8de2d7bbcfa2bd3dbcc3f23ade92d3d9
 
 name:           carl2
 version:        0.1.0.0
@@ -26,6 +26,7 @@ source-repository head
 
 library
   exposed-modules:
+      Carl2.Bot
       Carl2.BotImpl
       Carl2.Fields.ChatId
       Carl2.Fields.UserState
@@ -37,6 +38,7 @@ library
       Paths_carl2
   hs-source-dirs:
       src
+  ghc-options: -W
   build-depends:
       base >=4.7 && <5
     , esqueleto
@@ -55,7 +57,7 @@ executable carl2-exe
   main-is: Main.hs
   hs-source-dirs:
       app
-  ghc-options: -threaded -rtsopts -with-rtsopts=-N
+  ghc-options: -threaded -rtsopts -with-rtsopts=-N -W
   build-depends:
       base >=4.7 && <5
     , carl2

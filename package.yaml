@@ -26,6 +26,8 @@ dependencies:
 
 library:
   source-dirs: src
+  ghc-options:
+  - -W
 
 executables:
   carl2-exe:
@@ -35,6 +37,7 @@ executables:
     - -threaded
     - -rtsopts
     - -with-rtsopts=-N
+    - -W
     dependencies:
     - carl2
     # hpack Paths_ warning workaround, see https://github.com/sol/hpack/issues/303
